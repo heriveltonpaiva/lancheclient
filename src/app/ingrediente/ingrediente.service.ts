@@ -14,7 +14,14 @@ export class IngredienteService {
   }
   
   getListaIngredientes(): Observable<Ingrediente[]> {
-    this.messageService.add('HeroService: fetched heroes');
+    this.messageService.add('Chamando Listagem de Ingredientes');
     return of(INGREDIENTES);
 }
+  
+  getIngrediente(id: number): Observable<Ingrediente> {
+    // Todo: send the message _after_ fetching the hero
+    this.messageService.add(`Consultando Ingrediente : id=${id}`);
+    return of(INGREDIENTES.find(ingrediente => ingrediente.id === id));
+  }
+  
 }

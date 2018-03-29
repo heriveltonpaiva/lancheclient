@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {Ingrediente} from '../ingrediente/Ingrediente';
+import { IngredienteService } from '../ingrediente/ingrediente.service';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-ingrediente-detail',
@@ -9,9 +12,24 @@ import {Ingrediente} from '../ingrediente/Ingrediente';
 export class IngredienteDetailComponent implements OnInit {
   @Input() ingrediente: Ingrediente;
  
-  constructor() { }
+  constructor(
+  private route: ActivatedRoute,
+    private ingredienteService: IngredienteService,
+    private location: Location) 
+  { }
  
   ngOnInit() {
+    this.getIngrediente();
+  }
+  
+  getIngrediente(): void {
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.ingredienteService.getIngrediente(id)
+      .subscribe(ingrediente => this.ingrediente = ingrediente);
+  }
+ 
+  goBack(): void {
+    this.location.back();
   }
  
 }

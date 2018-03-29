@@ -1,0 +1,9 @@
+<h3>DashBoard</h3>
+<div class="grid grid-pad">
+  <a *ngFor="let ing of ingredientes" class="col-1-4"
+      routerLink="/detail/{{ing.id}}">
+    <div class="module ingrediente">
+      <h4>{{ing.descricao}}</h4>
+    </div>
+  </a>
+</div>

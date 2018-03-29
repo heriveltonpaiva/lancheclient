@@ -1,8 +1,10 @@
 
 <h2>Meus Ingredientes</h2>
 <ul class="ingredientes">
-  <li *ngFor="let ingrediente of ingredientes"   [class.selected]="ingrediente === objSelecionado" (click)="onSelect(ingrediente)">
-    <span class="badge">{{ingrediente.id}}</span> {{ingrediente.descricao}}
+  <li *ngFor="let ing of ingredientes"   [class.selected]="ing === objSelecionado" (click)="onSelect(ing)">
+    <a routerLink="/detail/{{ing.id}}">
+      <span class="badge">{{ing.id}}</span> {{ing.descricao}}
+    </a>
   </li>
 </ul>
 

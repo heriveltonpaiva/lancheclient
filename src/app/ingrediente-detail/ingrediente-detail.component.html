@@ -1,10 +1,14 @@
 <div *ngIf="ingrediente">
-<h2>{{ ingrediente.descricao | uppercase }} Detalhes</h2>
-<div><span>id: </span>{{ingrediente.id}}</div>
-<div>
-  <label>name:
-    <input [(ngModel)]="ingrediente.descricao" placeholder="name">
-  </label>
-</div>
-
+  <h2>{{ ingrediente.descricao | uppercase }}</h2>
+  <div><span>id: </span>{{ingrediente.id}}</div>
+  <div>
+    <label>Descrição:
+      <input [(ngModel)]="ingrediente.descricao" placeholder="name"/>
+    </label>
+     <br>
+     <label>Valor:
+      <input [(ngModel)]="ingrediente.valor" placeholder="valor"/>
+    </label>
+  </div>
+  <button (click)="goBack()">Voltar</button>
 </div>
