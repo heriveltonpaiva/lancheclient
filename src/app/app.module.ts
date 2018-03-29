@@ -12,6 +12,7 @@ import { MessageComponent } from './messages/message.component';
 import { MessageService } from './messages/message.service';
 
 import { AppRoutingModule }     from './app-routing.module';
+import { HttpModule } from '@angular/http';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { AppRoutingModule }     from './app-routing.module';
   imports: [
     BrowserModule,
     FormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpModule 
   ],
   providers: [
     IngredienteService,
