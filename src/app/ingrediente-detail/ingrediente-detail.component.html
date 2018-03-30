@@ -1,14 +1,21 @@
-<div *ngIf="ingrediente">
-  <h2>{{ ingrediente.descricao | uppercase }}</h2>
-  <div><span>id: </span>{{ingrediente.id}}</div>
-  <div>
-    <label>Descrição:
-      <input [(ngModel)]="ingrediente.descricao" placeholder="name"/>
-    </label>
-     <br>
-     <label>Valor:
-      <input [(ngModel)]="ingrediente.valor" placeholder="valor"/>
-    </label>
-  </div>
-  <button (click)="goBack()">Voltar</button>
+
+<div style="max-width: 30rem;" *ngIf="ingrediente">
+    <div class="card-header">Alteração</div>
+    <div class="card-body text-secondary">
+        <h5 class="card-title"> {{ ingrediente.descricao | uppercase }}</h5>
+         <form>
+ 	<div class="row">
+ 		<label class="grey-text">Descrição:</label>
+        <input [(ngModel)]="ingrediente.descricao" placeholder="descricao" class="form-control mr-sm-5"/>
+        <label>Valor:</label>
+        <input [(ngModel)]="ingrediente.valor" placeholder="valor" class="form-control mr-sm-5"/>
+    <div class="text-center mt-4">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Alterar</button>
+        <button class="btn btn-outline-default my-2 my-sm-0"  (click)="goBack()" >Voltar<i class="fa fa-paper-plane-o ml-2"></i></button>
+    </div>
+    </div>
+</form>
+    </div>
 </div>
+                      
+                  

@@ -1,11 +1,23 @@
 
 <h2>Meus Ingredientes</h2>
-<ul class="ingredientes">
-  <li *ngFor="let ing of ingredientes"   [class.selected]="ing === objSelecionado" (click)="onSelect(ing)">
-    <a routerLink="/detail/{{ing.id}}">
-      <span class="badge">{{ing.id}}</span> {{ing.descricao}}
-    </a>
-  </li>
-</ul>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Descrição</th>
+            <th>Valor R$</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let ing of ingredientes"   [class.selected]="ing === objSelecionado" (click)="onSelect(ing)">
+            <td>{{ing.id}}</td>
+            <td>{{ing.descricao}}</td>
+            <td>{{ing.valor}}</td>
+            <td><button type="button" class="btn btn-warning" routerLink="/detail/{{ing.id}}">Alterar</button></td>
+        </tr>
+    </tbody>
+</table>
 
 <app-ingrediente-detail [ingrediente]="objSelecionado" ></app-ingrediente-detail>
