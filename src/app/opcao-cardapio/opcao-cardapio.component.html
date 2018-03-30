@@ -1,22 +1,25 @@
-
-<h2>Cardápio</h2>
-<table class="table">
-    <thead>
-        <tr>
-            <th>#</th>
-            <th>Descrição</th>
-            <th>Valor R$</th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let obj of opcoes"   [class.selected]="obj === objSelecionado" (click)="onSelect(ing)">
-            <td>{{obj.id}}</td>
-            <td>{{obj.descricao}}</td>
-            <td>{{obj.valor}}</td>
-            <td><button type="button" class="btn btn-info" routerLink="/detail/{{obj.id}}">Visualizar Ingredientes</button></td>
-        </tr>
-    </tbody>
-</table>
-<br>
-
+<div class="card" style="margin-top: 5px;">
+	<h3 class="card-header primary-color white-text">Cardápio</h3>
+	<div class="card-body">
+		<table class="table">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Descrição</th>
+					<th>Valor R$</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let obj of opcoes"
+					[class.selected]="obj === objSelecionado" (click)="onSelect(ing)">
+					<td>{{obj.id}}</td>
+					<td>{{obj.descricao}}</td>
+					<td>{{obj.valor}}</td>
+					<td><button type="button" class="btn btn-info"
+							routerLink="/detail/{{obj.id}}">Visualizar Ingredientes</button></td>
+				</tr>
+			</tbody>
+		</table>
+	<div>
+</div>

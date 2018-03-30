@@ -1,0 +1,94 @@
+<div class="card" style="margin-top:5px;">
+    <h3 class="card-header primary-color white-text">Realizar Pedido</h3>
+    <div class="card-body">
+        
+        <h5>Faça seu Lanche! </h5>
+        <div class="row" style="margin-bottom:30px;">
+        	<div class="col">
+        		<label>Opção do Cardápio:</label>
+        		<select>
+				    <option value="0" disabled selected>-- SELECIONE --</option>
+				    <option value="1">Customizado</option>
+				    <option value="2">Option 2</option>
+				    <option value="3">Option 3</option>
+				</select>
+        	</div>
+        	<div class="col">
+        		<label>Ingrediente:</label>
+        		<select>
+				    <option value="0" disabled selected>-- SELECIONE --</option>
+				    <option value="1">Customizado</option>
+				    <option value="2">Option 2</option>
+				    <option value="3">Option 3</option>
+				</select>
+        	</div>
+        	 <div class="col">
+        		 <button type="button" class="btn btn-warning">Adicionar Ingrediente Extra</button>
+        	 </div>
+        </div>
+        <h5>Ingredientes do</h5>
+        <table class="table">
+		    <thead>
+		        <tr>
+		            <th>Porção</th>
+		            <th>Descrição</th>
+		            <th>Valor Unitário R$</th>
+		            <th>Total R$</th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <tr *ngFor="let ing of objSelecionado.ingredientes"   [class.selected]="ing === objSelecionado" (click)="onSelect(ing)">
+		            <td>{{ing.id}}</td>
+		            <td>{{ing.descricao}}</td>
+		            <td>{{ing.valor}}</td>
+		        </tr>
+		    </tbody>
+		</table>
+		<div class="row">
+			<div class="col">
+        		<a class="btn btn-info">Adicionar Opção Pedido</a>
+        	</div>
+        	<div class="col">
+        	</div>
+        	<div class="col">
+        		<h4>Total do Lanche R$: 00,00</h4>
+        	</div>
+        </div>
+    
+    <div style="margin-top:100px;">
+        <h5>Meu Pedido </h5>
+    
+    <table class="table">
+		    <thead>
+		        <tr>
+		            <th>Número</th>
+		            <th>Descrição</th>
+		            <th>Quantidade</th>
+		            <th>Valor Unitário R$</th>
+		            <th>Desconto R$</th>
+		            <th>Total R$</th>
+		            <th></th>
+		        </tr>
+		    </thead>
+		    <tbody>
+		        <tr *ngFor="let ing of objSelecionado.ingredientes"   [class.selected]="ing === objSelecionado" (click)="onSelect(ing)">
+		            <td>{{ing.id}}</td>
+		            <td>{{ing.descricao}}</td>
+		            <td>{{ing.valor}}</td>
+		        </tr>
+		    </tbody>
+		</table>
+		<div class="row">
+			<div class="col">
+        		<a class="btn btn-primary">Finalizar Pedido</a>
+        	</div>
+        	<div class="col">
+        	</div>
+        	<div class="col">
+        		<h4>Total do Pedido R$: 00,00</h4>
+        	</div>
+        </div>
+		
+   </div>
+   </div>     
+</div>

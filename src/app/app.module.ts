@@ -17,6 +17,7 @@ import { HttpModule } from '@angular/http';
 import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { OpcaoCardapioComponent } from './opcao-cardapio/opcao-cardapio.component';
 import { OpcaoCardapioService } from './opcao-cardapio/opcao-cardapio.service';
+import { PedidoComponent } from './pedido/pedido.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { OpcaoCardapioService } from './opcao-cardapio/opcao-cardapio.service';
     IngredienteDetailComponent,
     MessageComponent,
     AppNavbarComponent,
-    OpcaoCardapioComponent
+    OpcaoCardapioComponent,
+    PedidoComponent
   ],
   imports: [
     NgbModule.forRoot(),
