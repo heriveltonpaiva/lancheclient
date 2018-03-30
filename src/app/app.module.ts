@@ -15,7 +15,8 @@ import { MessageService } from './messages/message.service';
 import { AppRoutingModule }     from './app-routing.module';
 import { HttpModule } from '@angular/http';
 import { AppNavbarComponent } from './app-navbar/app-navbar.component';
-
+import { OpcaoCardapioComponent } from './opcao-cardapio/opcao-cardapio.component';
+import { OpcaoCardapioService } from './opcao-cardapio/opcao-cardapio.service';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { AppNavbarComponent } from './app-navbar/app-navbar.component';
     IngredienteComponent,
     IngredienteDetailComponent,
     MessageComponent,
-    AppNavbarComponent
+    AppNavbarComponent,
+    OpcaoCardapioComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -35,7 +37,8 @@ import { AppNavbarComponent } from './app-navbar/app-navbar.component';
   ],
   providers: [
     IngredienteService,
-    MessageService
+    MessageService,
+    OpcaoCardapioService
   ],
   bootstrap: [AppComponent]
 })
