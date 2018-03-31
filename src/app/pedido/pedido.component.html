@@ -1,62 +1,108 @@
 <div class="card" style="margin-top:5px;">
     <h3 class="card-header primary-color white-text">Realizar Pedido</h3>
     <div class="card-body">
-    <pre>{{formulario.value | json}}</pre>
-    
        <form [formGroup]="formulario"> 
         <h5>Faça seu Lanche! </h5>
         <div class="row" style="margin-bottom:30px;">
         	<div class="col">
         		<label>Opção do Cardápio:</label>
-        		<select class="form-control" formControlName="idOpcaoCardapio" (change)="carregarListaIngredientes()">
+        		<select class="form-control" formControlName="idOpcaoCardapio" (change)="carregarListaIngredientes()" (click)="onSubmit()">
         			<option [value]='0' >-- SELECIONE --</option>
 				    <option *ngFor="let c of opcoes" [value]="c.id"  >{{c.descricao}}</option>
 				    <option [value]='5' >Customizado</option>
 				</select>
         	</div>
         	
-        	<div class="col" *ngIf="formulario.value.idOpcaoCardapio == 5"> 
+        	<div class="col"> 
         		<label>Ingrediente:</label> 
         		<select class="form-control" formControlName="idIngrediente">
         			<option [value]='0' >-- SELECIONE --</option>
 				    <option *ngFor="let ing of opcoesIngredientes" [value]="ing.id"  >{{ing.descricao}}</option>
 				</select>
-        	 </div>  
-        	 
-        	 <button class="btn btn-primary" style="height:40px; margin-top:30px;" (click)="onSubmit()">Adicionar</button>
-        </div>
-    	</form>
-    <div style="margin-top:100px;">
+			 </div>  
+			 <div class="col" style="margin-top:32px;"><button class="btn btn-success" 
+				title="Adicionar Ingrediente" (click)="addIngredienteOpcaoCustom();">Adicionar Ingrediente Extra</button></div>
+
+			</div>
+		<div style="margin-top:50px;" *ngIf="formulario.value.idOpcaoCardapio != 0">
+			<h5>Ingredientes do  {{listaOpcaoIngredientes[0].opcaoCardapio.descricao}}</h5>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Quantidade</th>
+						<th>Descrição</th>
+						<th>Valor Unitário R$</th>
+						<th>Desconto R$</th>
+						<th>Total R$</th>
+						<th style="text-align:center;">Ação</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr *ngFor="let ing of listaOpcaoIngredientes">
+						<td>{{ing.quantidade}}</td>
+						<td>{{ing.ingrediente.descricao}} 
+							<span style="color:tomato" *ngIf="ing.quantidade > 2 && ing.ingrediente.id == 5"><b>(Mais Queijo)</b></span>  
+							<span style="color:slateblue" *ngIf="ing.quantidade > 2 && ing.ingrediente.id == 3"><b>(Mais Carne)</b></span>
+						</td>
+						<td>{{ing.ingrediente.valor | currency:'R$'}}</td>
+						<td>{{ing.valorDesconto | currency:'R$'}}</td>
+						<td>{{ing.valorTotal | currency:'R$'}}</td>
+						<td style="text-align:center;">
+							<button class="btn btn-success" title="Aumentar Porção" (click)="aumentarQuantidade(ing);">+</button>
+							<button *ngIf="ing.quantidade > 1" class="btn btn-danger" title="Aumentar Porção" style="margin:5px;" (click)="diminuirQuantidade(ing);">-</button>
+						</td>
+					</tr>
+				</tbody>
+				
+			</table>
+			
+			<div class="row">
+					<div class="col">
+					    <button class="btn btn-primary" style="height:40px;" (click)="onSubmit()">Adicionar Lanche</button>
+					</div>
+					<div class="col">
+					</div>
+					<div class="col">
+						<h4 style="color:red; text-align:right;">Total R$: {{valorTotalLanche | currency:'R$'}}</h4>
+					</div>
+				</div>
+		</div>
+
+    <div style="margin-top:50px;">
         <h5>Meu Pedido </h5>
     
-    <table class="table">
-		    <thead>
-		        <tr>
-		            <th>Número</th>
-		            <th>Descrição</th>
-		            <th>Quantidade</th>
-		            <th>Valor Unitário R$</th>
-		            <th>Desconto R$</th>
-		            <th>Total R$</th>
-		            <th></th>
-		        </tr>
-		    </thead>
-		    <tbody>
-		        
-		    </tbody>
+		<table class="table">
+			<thead>
+				<tr>
+					<th>#</th>
+					<th>Descrição</th>
+					<th>Valor R$</th>
+					<th>Desconto R$</th>
+					<th>Total R$</th>
+					<th>Valor R$</th>
+					<th>Quantidade</th>
+					<th>Ação</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					
+				</tr>
+			</tbody>
 		</table>
 		<div class="row">
 			<div class="col">
-        		<a class="btn btn-primary">Finalizar Pedido</a>
+					<button class="btn btn-primary">Finalizar Pedido</button>
         	</div>
         	<div class="col">
         	</div>
         	<div class="col">
-        		<h4>Total do Pedido R$: 00,00</h4>
+        		<h4 style="color:red; text-align:right;">Total R$: 00,00</h4>
         	</div>
         	
         </div>
-		
+	
    </div> 
+</form> 
    </div>     
 </div>

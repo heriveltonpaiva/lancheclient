@@ -12,12 +12,15 @@ import { IngredienteService } from './ingrediente/ingrediente.service';
 import { MessageComponent } from './messages/message.component';
 import { MessageService } from './messages/message.service';
 
+
 import { AppRoutingModule }     from './app-routing.module';
 import { HttpModule } from '@angular/http';
 import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { OpcaoCardapioComponent } from './opcao-cardapio/opcao-cardapio.component';
 import { OpcaoCardapioService } from './opcao-cardapio/opcao-cardapio.service';
 import { PedidoComponent } from './pedido/pedido.component';
+import { OpcaoIngredienteComponent } from './opcao-ingrediente/opcao-ingrediente.component';
+import { OpcaoIngredienteService } from './opcao-ingrediente/opcao-ingrediente.service';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,8 @@ import { PedidoComponent } from './pedido/pedido.component';
     MessageComponent,
     AppNavbarComponent,
     OpcaoCardapioComponent,
-    PedidoComponent
+    PedidoComponent,
+    OpcaoIngredienteComponent
   ],
   imports: [
     NgbModule.forRoot(),
@@ -41,7 +45,8 @@ import { PedidoComponent } from './pedido/pedido.component';
   providers: [
     IngredienteService,
     MessageService,
-    OpcaoCardapioService
+    OpcaoCardapioService,
+    OpcaoIngredienteService
   ],
   
   bootstrap: [AppComponent]

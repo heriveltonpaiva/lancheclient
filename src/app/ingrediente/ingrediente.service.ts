@@ -14,13 +14,11 @@ import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/do';
 
  
-
-
 @Injectable()
 export class IngredienteService {
   private ingredienteURL = 'http://127.0.0.1:8080/ingredientes';
   constructor(
-    private http: Http,
+    private http: Http, 
     private messageService: MessageService){
   }
   getListaIngredientes(): Observable<Ingrediente[]> {
@@ -31,7 +29,7 @@ export class IngredienteService {
             .catch(this.handleError);
   }
   getIngrediente(id:number){
-     const url = `${this.ingredienteURL}/${id}`;
+     const url = `http://127.0.0.1:8080/ingrediente/${id}`;
      return this.http.get(this.ingredienteURL)
     .map((response: Response) => <Ingrediente>response.json())
             .do(data => console.log('Unitário: ' + JSON.stringify(data)))
