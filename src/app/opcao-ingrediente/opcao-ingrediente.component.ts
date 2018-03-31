@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-opcao-ingrediente',
@@ -7,9 +9,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class OpcaoIngredienteComponent implements OnInit {
 
-  constructor() { }
+  constructor(private route: ActivatedRoute,
+    private location: Location) { }
 
   ngOnInit() {
+    this.exibirID;
   }
 
+  exibirID(): void {
+    const id = +this.route.snapshot.paramMap.get('id');
+  }
 }

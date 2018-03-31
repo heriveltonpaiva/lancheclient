@@ -22,10 +22,8 @@ export class IngredienteService {
     private messageService: MessageService){
   }
   getListaIngredientes(): Observable<Ingrediente[]> {
-    this.messageService.add('Chamando Listagem de Ingredientes');
     return this.http.get(this.ingredienteURL)
     .map((response: Response) => <Ingrediente>response.json())
-            .do(data => console.log('All: ' + JSON.stringify(data)))
             .catch(this.handleError);
   }
   getIngrediente(id:number){

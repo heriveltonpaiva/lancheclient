@@ -21,17 +21,14 @@ export class OpcaoCardapioService {
     private messageService: MessageService){
   }
   getListaOpcoesCardapio(): Observable<OpcaoCardapio[]> {
-    this.messageService.add('Chamando Listagem de Opções Cardápio');
     return this.http.get(this.url)
     .map((response: Response) => <OpcaoCardapio>response.json())
-            .do(data => console.log('All: ' + JSON.stringify(data)))
             .catch(this.handleError);
   }
   getOpcoesCardapio(id:number){
      const url = `${this.url}/${id}`;
      return this.http.get(this.url)
     .map((response: Response) => <OpcaoCardapio>response.json())
-            .do(data => console.log('Unitário: ' + JSON.stringify(data)))
             .catch(this.handleError);
   }
   
