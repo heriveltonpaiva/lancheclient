@@ -2,7 +2,6 @@
     <h3 class="card-header primary-color white-text">Realizar Pedido</h3>
     <div class="card-body">
        <form [formGroup]="formulario"> 
-		<app-messages></app-messages>
         <h5>Faça seu Lanche! </h5>
         <div class="row" style="margin-bottom:10px;">
         	<div class="col">
@@ -10,16 +9,15 @@
         		<select class="form-control" formControlName="idOpcaoCardapio" (change)="chamarServicoListaIngrediente();mostrarFocus()">
         			<option [value]='0' selected="selected">-- SELECIONE --</option>
 				    <option *ngFor="let c of opcoes" [value]="c.id"  >{{c.descricao}}</option>
-				    <option [value]='5' >Customizado</option>
 				</select>
 			</div>
 			  
-			 <div class="col" style="margin-top:32px;"><button class="btn btn-success" 
+			 <div class="col" style="margin-top:32px;"><button class="btn btn-success" *ngIf="!fluxoOpcaoCustom"
 				title="Adicionar Ingrediente" (click)="visualizarIngrediente();" #input1>Visualizar Ingredientes</button></div>
 			</div>
 			 
 
-			<div class="row" style="margin-bottom:10px;" *ngIf="renderDivIngrediente">
+			<div class="row" style="margin-bottom:10px;" *ngIf="renderDivIngrediente || fluxoOpcaoCustom">
 					<div class="col">		
 						<label>Ingrediente Extra:</label> 
 						<select class="form-control" formControlName="idIngrediente">
@@ -32,7 +30,8 @@
 					</div>		
 				</div>
 		<div style="margin-top:50px;" *ngIf="renderDivIngrediente">
-			<h5>Ingredientes do {{listaOpcaoIngredientes[0].opcaoCardapio.descricao}}</h5>
+			<h5 *ngIf="!fluxoOpcaoCustom">Ingredientes do {{listaOpcaoIngredientes[0].opcaoCardapio.descricao}}</h5>
+			<h5 *ngIf="fluxoOpcaoCustom">Ingredientes do Hamburguer Customizado</h5>
 			<table class="table">
 				<thead>
 					<tr>
@@ -56,9 +55,8 @@
 						<td>{{ing.valorTotal | currency:'R$'}}</td>
 						<td style="width:3px; text-align:right;">{{ing.quantidade}}</td>
 						<td style="text-align:center;" >
-							<button *ngIf="ing.id > 0"  class="btn btn-success" title="Aumentar Porção" (click)="aumentarQuantidade(ing);">+</button>
-							<button *ngIf="ing.id > 0 && ing.quantidade > 1" class="btn btn-danger" title="Aumentar Porção" style="margin:5px;" (click)="diminuirQuantidade(ing);">-</button>
-							<button *ngIf="ing.id ==0" class="btn btn-danger" title="Excluir" style="margin:5px;" (click)="removerIngredienteExtra(ing);">Excluir</button>
+							<button  class="btn btn-success" title="Aumentar Porção" (click)="aumentarQuantidade(ing);">+</button>
+							<button  class="btn btn-danger" title="Aumentar Porção" style="margin:5px;" (click)="diminuirQuantidade(ing);">-</button>
 						</td>
 					</tr>
 				</tbody>
@@ -77,7 +75,9 @@
 					</div>
 	
 		</div>
-
+		<div style="margin-top:5px;">
+			<app-messages></app-messages>
+		</div>
 	<!--	
     <div style="margin-top:50px;">
         <h5>Meu Pedido </h5>

@@ -36,7 +36,7 @@ export class PedidoComponent implements OnInit {
 	ingrediente: Ingrediente;
 	valorTotalLanche : number;
 	renderDivIngrediente: boolean;
-
+    fluxoOpcaoCustom: boolean;
  constructor(
 		  private messageService: MessageService,
 		  private opcaoService: OpcaoCardapioService, 
@@ -46,6 +46,7 @@ export class PedidoComponent implements OnInit {
 		  this.formulario.controls['idOpcaoCardapio'].setValue(0, {onlySelf: true});
 		  this.formulario.controls['idIngrediente'].setValue(0, {onlySelf: true});
 		  this.renderDivIngrediente = false;
+		  this.fluxoOpcaoCustom = false;
 	}
 
   ngOnInit() {
@@ -54,9 +55,17 @@ export class PedidoComponent implements OnInit {
   }
 
   mostrarFocus() {
-	if(this.formulario.value.idOpcaoCardapio == 0 || this.formulario.value.idOpcaoCardapio == 5)
+	if(this.formulario.value.idOpcaoCardapio == 5){
+		this.fluxoOpcaoCustom = true;
+		this.listaOpcaoIngredientes = []; 
+	}
+	else
+		this.fluxoOpcaoCustom = false;
+	if(this.formulario.value.idOpcaoCardapio == 0 || this.fluxoOpcaoCustom)
 	   this.renderDivIngrediente = false;
-	this.inputEl.nativeElement.focus();
+	if(!this.fluxoOpcaoCustom)
+	   this.inputEl.nativeElement.focus();
+	
   }
 
   visualizarIngrediente(){
@@ -74,7 +83,7 @@ export class PedidoComponent implements OnInit {
   
   aumentarQuantidade(obj:OpcaoIngrediente){
 	this.listaOpcaoIngredientes.forEach(element => {
-		if(obj.id == element.id){
+		if(obj.ingrediente.id == element.ingrediente.id){
 			element.quantidade ++;
 			element.valorTotal = element.valorTotal + element.ingrediente.valor;
 			this.calcularDesconto(element);
@@ -107,36 +116,37 @@ export class PedidoComponent implements OnInit {
 	}
  };
 
+
  addIngredienteExtra(){
 	var idOpcao = this.formulario.value.idOpcaoCardapio;
 	var idIngrediente = this.formulario.value.idIngrediente;
-	var existeElemento = false;
-	if(idOpcao  != 5){
-		this.listaOpcaoIngredientes.forEach(element => {
-			if(element.ingrediente.id == idIngrediente){
-			   this.aumentarQuantidade(element);
-			   existeElemento = true;
-			   console.log(element);
-			}	
-		});
-	}
-	if(!existeElemento){
-		var obj = {
-			id:0, 
-			opcaoCardapio:{},
-			ingrediente:{},
-			quantidade:1, 
-			valorDesconto:0, 
-			valorTotal:0};
+	//adicionar novo ingrediente
+	if(!this.atualizarValorIngrediente(idIngrediente)){
+		var obj = {id:0, opcaoCardapio:{},ingrediente:{},
+			quantidade:1, valorDesconto:0, valorTotal:0};
+	    //realiza a busca dos objetos opcaoCardapio e Ingrediente
 		obj.ingrediente = this.opcoesIngredientes.find(x => x.id == idIngrediente);
-		obj.opcaoCardapio = this.opcoes.find(x =>  x.id = idOpcao);
-		obj.valorTotal = (<OpcaoIngrediente>obj).ingrediente.valor;
-
+		if(idOpcao != 5)
+			obj.opcaoCardapio = this.opcoes.find(x =>  x.id = idOpcao);
+		//adiciona o elemento novo na listagem
 		this.listaOpcaoIngredientes.push(<OpcaoIngrediente> obj);
-	}
-	this.calcularDesconto(<OpcaoIngrediente>obj);
+		this.renderDivIngrediente = true;
 	this.messageService.add(1,"O Ingrediente "+(<OpcaoIngrediente>obj)
 	.ingrediente.descricao.toUpperCase()+" foi adicionado ao seu lanche.");
+	}
+  }
+
+  atualizarValorIngrediente(idIngrediente:number):boolean{
+	var encontrou = false;
+	this.listaOpcaoIngredientes.forEach(element => {
+		console.log(idIngrediente +""+element.ingrediente.id);
+	if(element.ingrediente.id == idIngrediente){
+	  		this.aumentarQuantidade(element);
+			encontrou = true;
+		}	
+	}	
+	);
+	return encontrou;
   }
 
   removerIngredienteExtra(obj:OpcaoIngrediente){
