@@ -1,21 +1,32 @@
 
-<div style="max-width: 30rem;" *ngIf="ingrediente">
-    <div class="card-header">Alteração</div>
-    <div class="card-body text-secondary">
-        <h5 class="card-title"> {{ ingrediente.descricao | uppercase }}</h5>
-         <form>
- 	<div class="row">
- 		<label class="grey-text">Descrição:</label>
-        <input [(ngModel)]="ingrediente.descricao" placeholder="descricao" class="form-control mr-sm-5"/>
-        <label>Valor:</label>
-        <input [(ngModel)]="ingrediente.valor" placeholder="valor" class="form-control mr-sm-5"/>
-    <div class="text-center mt-4">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Alterar</button>
-        <button class="btn btn-outline-default my-2 my-sm-0"  (click)="goBack()" >Voltar<i class="fa fa-paper-plane-o ml-2"></i></button>
-    </div>
-    </div>
-</form>
-    </div>
-</div>
+<div class="card" style="margin-top: 5px;"  *ngIf="ingrediente">
+        <h3 class="card-header primary-color white-text">Alterar Ingrediente</h3>
+        <div class="card-body">
+                <div class="card-body text-secondary">
+                    <h5 class="card-title"> </h5>
+                <form method="POST">
+                    <div class="row">
+                        <div class="col">
+                            <h5>Descrição:</h5>
+                            <input placeholder="descricao" [(ngModel)]="ingrediente.descricao" name="descricao" class="form-control mr-sm-5"/>
+                        </div>
+                        <div class="col-sm-3">
+                            <h5>Valor:</h5>
+                            <input placeholder="valor" [(ngModel)]="ingrediente.valor" name="valor" class="form-control mr-sm-5"/>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col" style="margin:5px;">
+                            <button class="btn btn-primary" (click)="alterar()">Alterar</button>
+                            <button class="btn btn-sucess"  (click)="goBack()" >Voltar</button>
+                        </div>
+                    </div>
+                 </form>
+        </div>
+</div>      
+<div style="margin-top:5px;">
+    <app-messages></app-messages>
+</div>      
+
                       
                   

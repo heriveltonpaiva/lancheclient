@@ -17,8 +17,8 @@ export class IngredienteComponent implements OnInit {
   ngOnInit(){
     this.getIngredientes();
   }
-  
-  onSelect(obj: Ingrediente): void {
+
+  preAlterar(obj: Ingrediente){
     this.objSelecionado = obj;
   }
   

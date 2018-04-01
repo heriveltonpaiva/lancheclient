@@ -12,15 +12,14 @@
 				</tr>
 			</thead>
 			<tbody>
-				<tr *ngFor="let ing of ingredientes"
-					[class.selected]="ing === objSelecionado" (click)="onSelect(ing)">
+				<tr *ngFor="let ing of ingredientes" [class.selected]="ing === objSelecionado" (click)="preAlterar(ing)">
 					<td>{{ing.id}}</td>
 					<td>{{ing.descricao}}</td>
-					<td>{{ing.valor}}</td>
-					<td><button type="button" class="btn btn-warning"
-							routerLink="/detail/{{ing.id}}">Alterar</button></td>
+					<td>{{ing.valor | currency:'R$'}}</td>
+					<td><button class="btn btn-sucess"  >Alterar</button></td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
+	<app-ingrediente-detail [ingrediente]="objSelecionado"></app-ingrediente-detail>
 </div>

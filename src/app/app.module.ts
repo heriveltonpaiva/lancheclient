@@ -21,6 +21,7 @@ import { OpcaoCardapioService } from './opcao-cardapio/opcao-cardapio.service';
 import { PedidoComponent } from './pedido/pedido.component';
 import { OpcaoIngredienteComponent } from './opcao-ingrediente/opcao-ingrediente.component';
 import { OpcaoIngredienteService } from './opcao-ingrediente/opcao-ingrediente.service';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { OpcaoIngredienteService } from './opcao-ingrediente/opcao-ingrediente.s
     FormsModule,
     AppRoutingModule,
     HttpModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule
   ],
   providers: [
     IngredienteService,

@@ -5,31 +5,5 @@
 	<hr class="my-2">
 	<p>Você ainda pode participar das nossas promoções: Light, Mais
 		Queijo e Mais Carne!</p>
-	<a class="btn btn-primary btn-lg" role="button" routerLink="/realizarPedido">Vamos Começar!</a>
-</div>
-
-<h3>Painel de Pedidos</h3>
-
-<div class="painel" style="margin-top: 30px;">
-	<table class="table">
-		<thead>
-			<tr>
-				<th>Número</th>
-				<th>Descrição</th>
-				<th>Quantidade</th>
-				<th>Valor Unitário R$</th>
-				<th>Desconto R$</th>
-				<th>Total R$</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr *ngFor="let ing of objSelecionado.ingredientes"
-				[class.selected]="ing === objSelecionado" (click)="onSelect(ing)">
-				<td>{{ing.id}}</td>
-				<td>{{ing.descricao}}</td>
-				<td>{{ing.valor}}</td>
-			</tr>
-		</tbody>
-	</table>
+	<a class="btn btn-primary btn-lg" role="button" routerLink="/realizarPedido">Vamos Começar!</a>	
 </div>
