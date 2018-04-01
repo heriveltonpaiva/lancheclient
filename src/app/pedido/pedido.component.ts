@@ -36,7 +36,8 @@ export class PedidoComponent implements OnInit {
 	ingrediente: Ingrediente;
 	valorTotalLanche : number;
 	renderDivIngrediente: boolean;
-    fluxoOpcaoCustom: boolean;
+	fluxoOpcaoCustom: boolean;
+	promocaoLight:boolean;
  constructor(
 		  private messageService: MessageService,
 		  private opcaoService: OpcaoCardapioService, 
@@ -47,6 +48,8 @@ export class PedidoComponent implements OnInit {
 		  this.formulario.controls['idIngrediente'].setValue(0, {onlySelf: true});
 		  this.renderDivIngrediente = false;
 		  this.fluxoOpcaoCustom = false;
+		  this.promocaoLight = false;
+		  this.valorTotalLanche = 0;
 	}
 
   ngOnInit() {
@@ -72,50 +75,81 @@ export class PedidoComponent implements OnInit {
 	if(this.formulario.value.idOpcaoCardapio != 0 && this.formulario.value.idOpcaoCardapio != 5){
 		this.renderDivIngrediente = true;
 		this.carregarListaIngredientes();
+		//calcula o valor total do lanche ao clicar em visualizar
+		this.listaOpcaoIngredientes.forEach(item => {
+			this.valorTotalLanche += item.valorTotal;
+		});
 	}
   }
-  
-  onSubmit(){
-	  this.messageService.add(1,'Lanche adicionado!'+this.listaIngredientes);
-	  console.log(this.formulario.value)
-	  console.log("Lista de Lanches:"+ this.ingredienteService.getIngrediente(1));
+  calcularPromocaoLight():boolean{
+	  var alface = this.listaOpcaoIngredientes.find(x => x.ingrediente.id == 1);
+	  var bacon = this.listaOpcaoIngredientes.find(x => x.ingrediente.id == 2);
+	  this.promocaoLight = !bacon;
+	  if(this.promocaoLight && (alface != null || alface != undefined)){
+		     //verifica se o alface é o primeiro ingrediente adicionado no pedido customizado
+			if(this.valorTotalLanche > 0)
+		   		this.valorTotalLanche = this.valorTotalLanche - (this.valorTotalLanche * 0.10);
+		   else
+				this.valorTotalLanche = alface.ingrediente.valor;
+				   
+		   console.log("Promoção LIGHT!:"+this.valorTotalLanche);
+		   this.promocaoLight = true;
+		return true;
+	  }
+	return false;
   }
-  
   aumentarQuantidade(obj:OpcaoIngrediente){
+	this.valorTotalLanche = 0;
 	this.listaOpcaoIngredientes.forEach(element => {
 		if(obj.ingrediente.id == element.ingrediente.id){
 			element.quantidade ++;
-			element.valorTotal = element.valorTotal + element.ingrediente.valor;
-			this.calcularDesconto(element);
-			this.valorTotalLanche = this.valorTotalLanche + element.ingrediente.valor;
+			if(obj.ingrediente.id == 3 || obj.ingrediente.id == 5){ 
+				this.calcularDesconto(element);
+			}else{
+				element.valorTotal = element.valorTotal + element.ingrediente.valor;
+			}
 		}
+		this.valorTotalLanche += element.valorTotal;
 	});
-	this.messageService.add(3,'O Ingrediente '+obj.ingrediente.descricao.toUpperCase()+' teve sua quantidade atualizada.');
+	this.calcularPromocaoLight();
   }
+
   diminuirQuantidade(obj:OpcaoIngrediente){
+	  if(obj.quantidade == 1 && obj.id == 0)
+	  	this.removerIngredienteExtra(obj);
+	  this.valorTotalLanche = 0;
 	  this.listaOpcaoIngredientes.forEach(element => {
 		  if(obj.id == element.id){
 			  element.quantidade --;
-			  element.valorTotal = element.valorTotal - element.ingrediente.valor;
-			  this.calcularDesconto(element);
-			  this.valorTotalLanche = this.valorTotalLanche - element.ingrediente.valor;
+			 if(obj.ingrediente.id == 3 || obj.ingrediente.id == 5){ 
+				 this.calcularDesconto(element);
+			 }else{
+				element.valorTotal = element.valorTotal - element.ingrediente.valor;;
+			 }
 		  }
+		  this.valorTotalLanche += element.valorTotal;
 	  });
-	  this.messageService.add(3,'O Ingrediente '+obj.ingrediente.descricao.toUpperCase()+' teve sua quantidade atualizada.');
+	  this.calcularPromocaoLight();
   }
   
   calcularDesconto(obj:OpcaoIngrediente){
-	if(obj.quantidade > 2){
-	var fator = obj.quantidade % 3;
-	var desconto = obj.ingrediente.valor - (fator * 2)
-	obj.valorDesconto = desconto;
-	obj.valorTotal = (obj.ingrediente.valor * obj.quantidade) - desconto;
+	if(obj.quantidade > 2 && obj.quantidade % 3 == 0){
+		//calcula quantos itens é para pagar 
+		var qntItemPagar = (obj.quantidade/3)  * 2;
+		// calcula o valor de todos os itens e calcula o valor que será realmente pago
+		var valorSemDesconto = obj.quantidade * obj.ingrediente.valor ;
+		var valorComDesconto = qntItemPagar * obj.ingrediente.valor;
+		var desconto = valorSemDesconto  - valorComDesconto;
+		console.log("Com Desconto:"+valorComDesconto+" Sem Desconto: "+valorSemDesconto+ " Desconto: "+desconto)
+		obj.valorDesconto = desconto;
+		obj.valorTotal = qntItemPagar * obj.ingrediente.valor;
 	}else{
-		obj.valorTotal + obj.valorDesconto;
-		obj.valorDesconto = 0;
+		obj.valorDesconto = Math.floor(obj.quantidade / 3) * obj.ingrediente.valor;
+		//se o valor for menor que 3 da promoção carne e queijo, o valor desconto será 0
+		obj.valorTotal = obj.quantidade * obj.ingrediente.valor - (obj.quantidade <= 2 ? 0:obj.valorDesconto);
+		obj.valorTotal = (obj.quantidade * obj.ingrediente.valor) - obj.valorDesconto;
 	}
  };
-
 
  addIngredienteExtra(){
 	var idOpcao = this.formulario.value.idOpcaoCardapio;
@@ -131,9 +165,10 @@ export class PedidoComponent implements OnInit {
 		//adiciona o elemento novo na listagem
 		this.listaOpcaoIngredientes.push(<OpcaoIngrediente> obj);
 		this.renderDivIngrediente = true;
-	this.messageService.add(1,"O Ingrediente "+(<OpcaoIngrediente>obj)
-	.ingrediente.descricao.toUpperCase()+" foi adicionado ao seu lanche.");
+	this.messageService.add(1,"O Ingrediente "+(<OpcaoIngrediente>obj).ingrediente.descricao.toUpperCase()+" foi adicionado ao seu lanche.");
 	}
+	this.calcularDesconto(obj instanceof OpcaoIngrediente ? obj:<OpcaoIngrediente>obj)
+	this.calcularPromocaoLight();
   }
 
   atualizarValorIngrediente(idIngrediente:number):boolean{
@@ -150,11 +185,20 @@ export class PedidoComponent implements OnInit {
   }
 
   removerIngredienteExtra(obj:OpcaoIngrediente){
+	  if(obj.quantidade == 1)
+	  	this.valorTotalLanche -= obj.valorTotal;
 	  var objetoRemover = this.listaOpcaoIngredientes.find(x => x.ingrediente == obj.ingrediente);
 	  var index = this.listaOpcaoIngredientes.indexOf(objetoRemover);
 	  this.listaOpcaoIngredientes.splice(index);
-	  console.log(obj);
+	  
   }
+
+  onSubmit(){
+	this.messageService.add(1,'Lanche adicionado!'+this.listaIngredientes);
+	console.log(this.formulario.value)
+	console.log("Lista de Lanches:"+ this.ingredienteService.getIngrediente(1));
+  }
+
 
   adicionarLanche(){
 	  this.messageService.add(1,'Adicionar Lanche!');
@@ -178,6 +222,6 @@ export class PedidoComponent implements OnInit {
 	
   getIngredientes(): void {
 	    this.ingredienteService.getListaIngredientes()
-	        .subscribe(opcoesIngredientes => this.opcoesIngredientes = opcoesIngredientes);
+			.subscribe(opcoesIngredientes => this.opcoesIngredientes = opcoesIngredientes);			
   }
 }

@@ -37,9 +37,9 @@
 					<tr>
 						<th>Descrição</th>
 						<th>Valor Unitário R$</th>
+						<th>Quantidade</th>
 						<th>Desconto R$</th>
 						<th>Total R$</th>
-						<th>Quantidade</th>
 						<th style="text-align:center;">Ação</th>
 					</tr>
 				</thead>
@@ -49,14 +49,15 @@
 							<span *ngIf="ing.id == 0"><b>(Extra)</b></span>
 							<span style="color:tomato" *ngIf="ing.quantidade > 2 && ing.ingrediente.id == 5"><b>(Mais Queijo)</b></span>  
 							<span style="color:slateblue" *ngIf="ing.quantidade > 2 && ing.ingrediente.id == 3"><b>(Mais Carne)</b></span>
+							<span style="color:salmon" *ngIf="ing.ingrediente.id == 1 && promocaoLight"><b>(Light 10%)</b></span>
 						</td>
 						<td>{{ing.ingrediente.valor | currency:'R$'}}</td>
+						<td style="width:3px; text-align:right;">{{ing.quantidade}}</td>
 						<td>{{ing.valorDesconto | currency:'R$'}}</td>
 						<td>{{ing.valorTotal | currency:'R$'}}</td>
-						<td style="width:3px; text-align:right;">{{ing.quantidade}}</td>
 						<td style="text-align:center;" >
 							<button  class="btn btn-success" title="Aumentar Porção" (click)="aumentarQuantidade(ing);">+</button>
-							<button  class="btn btn-danger" title="Aumentar Porção" style="margin:5px;" (click)="diminuirQuantidade(ing);">-</button>
+							<button  *ngIf="ing.quantidade > 1 || ing.id == 0" class="btn btn-danger" title="Diminuir Porção" style="margin:5px;" (click)="diminuirQuantidade(ing);">-</button>
 						</td>
 					</tr>
 				</tbody>
