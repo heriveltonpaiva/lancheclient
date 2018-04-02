@@ -4,8 +4,7 @@ import { OpcaoCardapioService } from './opcao-cardapio.service';
 
 @Component({
   selector: 'app-opcao-cardapio',
-  templateUrl: './opcao-cardapio.component.html',
-  styleUrls: ['./opcao-cardapio.component.css']
+  templateUrl: './opcao-cardapio.component.html'
 })
 export class OpcaoCardapioComponent implements OnInit {
 

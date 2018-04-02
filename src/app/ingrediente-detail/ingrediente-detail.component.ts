@@ -10,8 +10,7 @@ import { MessageService } from '../messages/message.service';
 
 @Component({
   selector: 'app-ingrediente-detail',
-  templateUrl: './ingrediente-detail.component.html',
-  styleUrls: ['./ingrediente-detail.component.css']
+  templateUrl: './ingrediente-detail.component.html'
 })
 export class IngredienteDetailComponent implements OnInit {
   @Input() ingrediente: Ingrediente;

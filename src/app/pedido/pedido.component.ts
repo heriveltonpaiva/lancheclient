@@ -15,8 +15,7 @@ import { OperacaoCardapioHelper } from './operacao-cardapio';
 
 @Component({
 	selector: 'app-pedido',
-	templateUrl: './pedido.component.html',
-	styleUrls: ['./pedido.component.css']
+	templateUrl: './pedido.component.html'
 })
 /**
  * Classe Reponsável pelas ações 
@@ -49,7 +48,7 @@ export class PedidoComponent implements OnInit {
 		private opcaoService: OpcaoCardapioService,
 		private ingredienteService: IngredienteService,
 		private opcaoIngredienteService: OpcaoIngredienteService) {
-			
+
 		this.formulario.controls['idOpcaoCardapio'].setValue(0, { onlySelf: true });
 		this.formulario.controls['idIngrediente'].setValue(0, { onlySelf: true });
 		this.renderDivIngrediente = false;

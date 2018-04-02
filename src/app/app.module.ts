@@ -19,7 +19,6 @@ import { AppNavbarComponent } from './app-navbar/app-navbar.component';
 import { OpcaoCardapioComponent } from './opcao-cardapio/opcao-cardapio.component';
 import { OpcaoCardapioService } from './opcao-cardapio/opcao-cardapio.service';
 import { PedidoComponent } from './pedido/pedido.component';
-import { OpcaoIngredienteComponent } from './opcao-ingrediente/opcao-ingrediente.component';
 import { OpcaoIngredienteService } from './opcao-ingrediente/opcao-ingrediente.service';
 import { HttpClientModule } from '@angular/common/http';
 
@@ -32,8 +31,7 @@ import { HttpClientModule } from '@angular/common/http';
     MessageComponent,
     AppNavbarComponent,
     OpcaoCardapioComponent,
-    PedidoComponent,
-    OpcaoIngredienteComponent
+    PedidoComponent
   ],
   imports: [
     NgbModule.forRoot(),
