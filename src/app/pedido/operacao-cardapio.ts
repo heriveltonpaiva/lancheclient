@@ -14,18 +14,31 @@ export class OperacaoCardapioHelper{
                         opcoes: OpcaoCardapio[],
                         listaOpcaoIngredientes:OpcaoIngrediente[], 
                         promocaoCardapio:PromocaoCardapioHelper, 
-                        promocaoLight:boolean):boolean {
+                        promocaoLight:boolean):[OpcaoIngrediente[], number] {
         var novoObj:OpcaoIngrediente;
+        console.log('VAAAAAAAAAAAAAAAAAA'+valorTotalLanche);
         //adicionar novo ingrediente
 		if (!this.atualizarValorIngrediente(idIngrediente, valorTotalLanche, listaOpcaoIngredientes, promocaoCardapio)) {
             var objEncapsulado = this.getObjEncapsulado(idOpcao, idIngrediente, valorTotalLanche);
             novoObj = <OpcaoIngrediente> this.criarNovaOpcaoIngrediente(objEncapsulado, ingredientes, opcoes);	
-            listaOpcaoIngredientes.push(novoObj);	
+            if(listaOpcaoIngredientes == undefined){
+                listaOpcaoIngredientes = [novoObj];
+            }else{
+                listaOpcaoIngredientes.push(novoObj);	
+            }
+            promocaoCardapio.calcularDesconto(novoObj);
+            promocaoCardapio.calcularPromocaoLight(listaOpcaoIngredientes, valorTotalLanche);          
         }
-        promocaoCardapio.calcularDesconto(<OpcaoIngrediente>novoObj)
-        promocaoCardapio.calcularPromocaoLight(listaOpcaoIngredientes, promocaoLight, valorTotalLanche);
-        
-        return novoObj.id == 0;
+        return [listaOpcaoIngredientes,this.calcularValorTotalNaAdicao(listaOpcaoIngredientes)];
+    }
+
+    calcularValorTotalNaAdicao(lista:OpcaoIngrediente[]):number{
+        var valorTotalLanche = 0;
+        lista.forEach(element => {
+            valorTotalLanche += element.valorTotal;
+            console.log('VALOR TOTAL'+element.valorTotal);
+        });
+      return valorTotalLanche;
     }
     
     /** Cria uma nova opção de ingrediente */
@@ -44,26 +57,35 @@ export class OperacaoCardapioHelper{
     /** Atualiza o valor do ingrediente caso ele já exista */
     atualizarValorIngrediente(idIngrediente: number, valorTotalLanche:number, 
         listaOpcaoIngredientes: OpcaoIngrediente[], promocaoCardapio: PromocaoCardapioHelper): boolean {
-
+        //a lista será vazia quando for adicionado o primeiro ingrediente da opção customizado
+        if(listaOpcaoIngredientes == undefined)
+           return false;    
 		var encontrou = false;
 		listaOpcaoIngredientes.forEach(element => {
 			console.log(idIngrediente + "" + element.ingrediente.id);
 			if (element.ingrediente.id == idIngrediente) {
 				promocaoCardapio.aumentarQuantidade(element, valorTotalLanche, listaOpcaoIngredientes);
-				encontrou = true;
+                encontrou = true;
+                promocaoCardapio.calcularDesconto(element)
+                promocaoCardapio.calcularPromocaoLight(listaOpcaoIngredientes, valorTotalLanche);
 			}
 		    }
-		);
+        );
+
 		return encontrou;
 	}
 
     /** Remove um ingrediente  */
-	removerIngrediente(obj: OpcaoIngrediente, valorTotalLanche:number, listaOpcaoIngredientes:OpcaoIngrediente[]) {
-		if (obj.quantidade == 1)
-			valorTotalLanche -= obj.valorTotal;
+	removerIngrediente(obj: OpcaoIngrediente, valorTotalLanche:number, listaOpcaoIngredientes:OpcaoIngrediente[]):number {
+        console.log(obj.ingrediente.valor+" - "+obj.quantidade)
+        if (obj.quantidade > 1)
+            valorTotalLanche = valorTotalLanche - (obj.ingrediente.valor * obj.quantidade);
 		var objetoRemover = listaOpcaoIngredientes.find(x => x.ingrediente == obj.ingrediente);
-		var index = listaOpcaoIngredientes.indexOf(objetoRemover);
-		listaOpcaoIngredientes.splice(index);
+        var index = listaOpcaoIngredientes.indexOf(objetoRemover);
+        listaOpcaoIngredientes.splice(index,1);
+        var promocao = new PromocaoCardapioHelper();
+        valorTotalLanche = promocao.calcularPromocaoLight(listaOpcaoIngredientes, valorTotalLanche);
+        return valorTotalLanche;
 	}
 
     private getObjEncapsulado(idOpcao:number, idIngrediente:number, valorTotal:number):OpcaoIngrediente{

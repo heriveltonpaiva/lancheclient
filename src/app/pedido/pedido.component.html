@@ -57,7 +57,7 @@
 						<td>{{ing.valorTotal | currency:'R$'}}</td>
 						<td style="text-align:center;" >
 							<button  class="btn btn-success" title="Aumentar Porção" (click)="aumentarQuantidade(ing);">+</button>
-							<button  *ngIf="ing.quantidade > 1 || ing.id == 0" class="btn btn-danger" title="Diminuir Porção" style="margin:5px;" (click)="diminuirQuantidade(ing);">-</button>
+							<button  *ngIf="ing.quantidade > 1" class="btn btn-danger" title="Diminuir Porção" style="margin:5px;" (click)="diminuirQuantidade(ing);">-</button>
 						</td>
 					</tr>
 				</tbody>

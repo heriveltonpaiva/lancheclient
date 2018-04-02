@@ -75,12 +75,12 @@ export class PedidoComponent implements OnInit {
 	/** Aumenta a quantidade após clicar no - da listagem */
 	aumentarQuantidade(obj: OpcaoIngrediente) {
 		var promocaoCardapio = new PromocaoCardapioHelper();
-		promocaoCardapio.aumentarQuantidade(obj, this.valorTotalLanche, this.listaOpcaoIngredientes);
+		this.valorTotalLanche = promocaoCardapio.aumentarQuantidade(obj, this.valorTotalLanche, this.listaOpcaoIngredientes);
 	}
 	/** Diminui q auntidade após clicar no + da listagem */
 	diminuirQuantidade(obj: OpcaoIngrediente) {
 		var promocaoCardapio = new PromocaoCardapioHelper();
-		promocaoCardapio.diminuirQuantidade(obj, this.valorTotalLanche, this.listaOpcaoIngredientes);
+		this.valorTotalLanche = promocaoCardapio.diminuirQuantidade(obj, this.valorTotalLanche, this.listaOpcaoIngredientes);
 	}
 
 	/** Adiciona um ingrediente extra na listagem do pedido */
@@ -88,12 +88,15 @@ export class PedidoComponent implements OnInit {
 		var idOpcao = this.formulario.value.idOpcaoCardapio;
 		var idIngrediente = this.formulario.value.idIngrediente;
 		var helper = new OperacaoCardapioHelper();
-		helper.addIngredienteExtra(idOpcao, idIngrediente,
+		var obj = helper.addIngredienteExtra(idOpcao, idIngrediente,
 			this.valorTotalLanche,
 			this.opcoesIngredientes,
 			this.opcoes,
 			this.listaOpcaoIngredientes, 
 			new PromocaoCardapioHelper(),this.promocaoLight)
+		this.valorTotalLanche = obj[1];
+		if(idOpcao ==5)
+			this.renderDivIngrediente = true;
 	}
 
 	/** Atualiza o valor do ingrediente */
@@ -105,7 +108,7 @@ export class PedidoComponent implements OnInit {
 	/** Remove o ingrediente que foi adicionado como extra da listagem */
 	removerIngredienteExtra(obj: OpcaoIngrediente) {
 		var helper = new OperacaoCardapioHelper();
-		helper.removerIngrediente(obj, this.valorTotalLanche, this.listaOpcaoIngredientes);
+		this.valorTotalLanche = helper.removerIngrediente(obj, this.valorTotalLanche, this.listaOpcaoIngredientes);
 	}
 
 		/** Carrega a listagem de opções com os ingredientes */
