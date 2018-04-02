@@ -3,6 +3,11 @@ import { Ingrediente } from "../ingrediente/ingrediente";
 import { PromocaoCardapioHelper } from "./promocao-helper";
 import { OpcaoCardapio } from "../opcao-cardapio/opcaocardapio";
 
+/**
+ * Classe utilitária responsável por fazer
+ * adição, remoção e cálculos do valor total do lanche
+ * @author Herivelton Paiva
+ */
 export class OperacaoCardapioHelper{
 
     /** Verifica se existe um ingrediente na listagem, se tiver atualiza o valor da quantidade, 
@@ -16,7 +21,6 @@ export class OperacaoCardapioHelper{
                         promocaoCardapio:PromocaoCardapioHelper, 
                         promocaoLight:boolean):[OpcaoIngrediente[], number] {
         var novoObj:OpcaoIngrediente;
-        console.log('VAAAAAAAAAAAAAAAAAA'+valorTotalLanche);
         //adicionar novo ingrediente
 		if (!this.atualizarValorIngrediente(idIngrediente, valorTotalLanche, listaOpcaoIngredientes, promocaoCardapio)) {
             var objEncapsulado = this.getObjEncapsulado(idOpcao, idIngrediente, valorTotalLanche);
@@ -32,11 +36,11 @@ export class OperacaoCardapioHelper{
         return [listaOpcaoIngredientes,this.calcularValorTotalNaAdicao(listaOpcaoIngredientes)];
     }
 
+    /** Método responsável por realizar o cálculo no acréscimo do ingrediente extra */
     calcularValorTotalNaAdicao(lista:OpcaoIngrediente[]):number{
         var valorTotalLanche = 0;
         lista.forEach(element => {
             valorTotalLanche += element.valorTotal;
-            console.log('VALOR TOTAL'+element.valorTotal);
         });
       return valorTotalLanche;
     }
@@ -49,7 +53,6 @@ export class OperacaoCardapioHelper{
         if (opcaoObj.opcaoCardapio.id != 5){
             obj.opcaoCardapio = opcoes.find(x => x.id == opcaoObj.opcaoCardapio.id);
         }
-        console.log("Criando novo objeto:"+opcaoObj.ingrediente.id + opcaoObj.opcaoCardapio.id);
         //adiciona o elemento novo na listagem
         return <OpcaoIngrediente>obj;
     }
@@ -62,7 +65,6 @@ export class OperacaoCardapioHelper{
            return false;    
 		var encontrou = false;
 		listaOpcaoIngredientes.forEach(element => {
-			console.log(idIngrediente + "" + element.ingrediente.id);
 			if (element.ingrediente.id == idIngrediente) {
 				promocaoCardapio.aumentarQuantidade(element, valorTotalLanche, listaOpcaoIngredientes);
                 encontrou = true;
@@ -77,7 +79,6 @@ export class OperacaoCardapioHelper{
 
     /** Remove um ingrediente  */
 	removerIngrediente(obj: OpcaoIngrediente, valorTotalLanche:number, listaOpcaoIngredientes:OpcaoIngrediente[]):number {
-        console.log(obj.ingrediente.valor+" - "+obj.quantidade)
         if (obj.quantidade > 1)
             valorTotalLanche = valorTotalLanche - (obj.ingrediente.valor * obj.quantidade);
 		var objetoRemover = listaOpcaoIngredientes.find(x => x.ingrediente == obj.ingrediente);

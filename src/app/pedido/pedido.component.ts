@@ -7,7 +7,7 @@ import { OpcaoIngrediente } from '../opcao-ingrediente/opcao-ingrediente';
 import { IngredienteService } from '../ingrediente/ingrediente.service';
 import { OpcaoIngredienteService } from '../opcao-ingrediente/opcao-ingrediente.service';
 import { Pedido } from './pedido';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from '../messages/message.service';
 import { forEach } from '@angular/router/src/utils/collection';
 import { PromocaoCardapioHelper } from './promocao-helper';
@@ -18,12 +18,15 @@ import { OperacaoCardapioHelper } from './operacao-cardapio';
 	templateUrl: './pedido.component.html',
 	styleUrls: ['./pedido.component.css']
 })
-
+/**
+ * Classe Reponsável pelas ações 
+ * da tela de criação do lanche
+ * @author Herivelton Paiva
+ */
 export class PedidoComponent implements OnInit {
 	@ViewChild('input1') inputEl: ElementRef;
-
 	formulario = new FormGroup({
-		idIngrediente: new FormControl(),
+		idIngrediente: new FormControl([Validators.required]),
 		idOpcaoCardapio: new FormControl()
 	});
 	//comboBox de Opções
@@ -32,7 +35,6 @@ export class PedidoComponent implements OnInit {
 	opcoesIngredientes: Ingrediente[];
 	//Lista de Ingredientes da Opção
 	listaIngredientes: Ingrediente[];
-
 	listaOpcaoIngredientes: OpcaoIngrediente[];
 	novaOpcaoIngrediente: OpcaoIngrediente;
 	ingrediente: Ingrediente;
@@ -47,7 +49,7 @@ export class PedidoComponent implements OnInit {
 		private opcaoService: OpcaoCardapioService,
 		private ingredienteService: IngredienteService,
 		private opcaoIngredienteService: OpcaoIngredienteService) {
-
+			
 		this.formulario.controls['idOpcaoCardapio'].setValue(0, { onlySelf: true });
 		this.formulario.controls['idIngrediente'].setValue(0, { onlySelf: true });
 		this.renderDivIngrediente = false;
@@ -70,6 +72,8 @@ export class PedidoComponent implements OnInit {
 			this.listaOpcaoIngredientes.forEach(item => {
 				this.valorTotalLanche += item.valorTotal;
 			});
+		}else{
+			this.messageService.add(2,'Opção do Cardápio: Campo Obrigatório não informado!');
 		}
 	}
 	/** Aumenta a quantidade após clicar no - da listagem */
@@ -85,16 +89,25 @@ export class PedidoComponent implements OnInit {
 
 	/** Adiciona um ingrediente extra na listagem do pedido */
 	addIngredienteExtra() {
+		
 		var idOpcao = this.formulario.value.idOpcaoCardapio;
 		var idIngrediente = this.formulario.value.idIngrediente;
-		var helper = new OperacaoCardapioHelper();
-		var obj = helper.addIngredienteExtra(idOpcao, idIngrediente,
-			this.valorTotalLanche,
-			this.opcoesIngredientes,
-			this.opcoes,
-			this.listaOpcaoIngredientes, 
-			new PromocaoCardapioHelper(),this.promocaoLight)
-		this.valorTotalLanche = obj[1];
+		if(idOpcao == 0){
+			this.messageService.add(2,'Opção do Cardápio: Campo Obrigatório não informado!');
+		}else{
+			if(idIngrediente == 0){
+				this.messageService.add(2,'Ingrediente Extra: Campo Obrigatório não informado!');
+			}else{
+				var helper = new OperacaoCardapioHelper();
+				var obj = helper.addIngredienteExtra(idOpcao, idIngrediente,
+					this.valorTotalLanche,
+					this.opcoesIngredientes,
+					this.opcoes,
+					this.listaOpcaoIngredientes, 
+					new PromocaoCardapioHelper(),this.promocaoLight)
+				this.valorTotalLanche = obj[1];
+			}
+		}
 		if(idOpcao ==5)
 			this.renderDivIngrediente = true;
 	}

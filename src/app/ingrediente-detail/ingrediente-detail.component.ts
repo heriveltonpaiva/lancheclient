@@ -29,10 +29,19 @@ export class IngredienteDetailComponent implements OnInit {
   }
   
   alterar(){
-      this.ingredienteService.update(this.ingrediente)
-      .subscribe(() => this.goBack());
-      console.log(this.ingrediente);
-      this.mensagemService.add(1, 'Registro atualizado com sucesso.');
+      var validar = true;
+      if(this.ingrediente.descricao == ""){
+         this.mensagemService.add(2, 'Descrição: Campo obrigatório não informado.');
+         validar = false;
+      }
+      if(this.ingrediente.valor < 0 || this.ingrediente.valor == null || this.ingrediente.valor.toString() == ""){
+         this.mensagemService.add(2, 'Valor R$: Campo obrigatório inválido.');
+         validar = false;
+      }
+      if(validar){
+        this.ingredienteService.update(this.ingrediente).subscribe(() => this.goBack());
+        this.mensagemService.add(1, 'Registro atualizado com sucesso.');
+      }
   }
 
   getIngrediente(): void {

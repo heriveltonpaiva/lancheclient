@@ -1,7 +1,14 @@
 import { OpcaoIngrediente } from "../opcao-ingrediente/opcao-ingrediente";
 
+/**
+ * Classe utilitária responsável por realizar
+ * os cálculos das regras de negócio e incrementar 
+ * e decrementar porçoes de ingredientes.
+ * @author Herivelton Paiva
+ */
 export class PromocaoCardapioHelper {
  
+    /** Realiza o cálculo da promoção LIGHT, no qual ao ter alface e não bacon é dado 10% de deconto no valor total do lanche */
     calcularPromocaoLight(listaOpcaoIngredientes:OpcaoIngrediente[], valorTotalLanche:number):number{
         var alface = listaOpcaoIngredientes.find(x => x.ingrediente.id == 1);
         var bacon = listaOpcaoIngredientes.find(x => x.ingrediente.id == 2);
@@ -18,6 +25,7 @@ export class PromocaoCardapioHelper {
         }
       return valorTotalLanche;
     }
+    /** Incrementa uma quantidade a mais de ingrediente ao item do cardapio e realizar os cálculos */
     aumentarQuantidade(obj:OpcaoIngrediente, valorTotalLanche:number, listaOpcaoIngredientes:OpcaoIngrediente[]):number{
       valorTotalLanche = 0;
       listaOpcaoIngredientes.forEach(element => {
@@ -30,13 +38,11 @@ export class PromocaoCardapioHelper {
               }
           }
           valorTotalLanche += element.valorTotal;
-          console.log("VALOR ELEMENTO: "+valorTotalLanche);
       });
       this.calcularPromocaoLight(listaOpcaoIngredientes, valorTotalLanche);
-      console.log("VALOR ELEMENTO LIGHT: "+valorTotalLanche);
       return valorTotalLanche;
     }
-  
+    /** Diminuir a quantidade porção de um ingrediente no cardapio, fazendo os cálculos gerais */
     diminuirQuantidade(obj:OpcaoIngrediente, valorTotalLanche:number, listaOpcaoIngredientes:OpcaoIngrediente[]):number{
         if(obj.quantidade == 1){
             throw new Error('Quantidade mínima atingida, não é possível diminuir.'); 
@@ -45,26 +51,20 @@ export class PromocaoCardapioHelper {
             listaOpcaoIngredientes.forEach(element => {
                 if(obj.id == element.id){
                     element.quantidade --;
-                if(obj.ingrediente.id == 3 || obj.ingrediente.id == 5){ 
-                    this.calcularDesconto(element);
-                }else{
-                    element.valorTotal = element.valorTotal - element.ingrediente.valor;;
-                    console.log("VALOR ELEMENTO: "+element.valorTotal);
-                }
+                    if(obj.ingrediente.id == 3 || obj.ingrediente.id == 5){ 
+                        this.calcularDesconto(element);
+                    }else{
+                        element.valorTotal = element.valorTotal - element.ingrediente.valor;;
+                    }
                 }
                 valorTotalLanche += element.valorTotal;
             });
-            console.log("VALOR TOTAL LANCHE: "+valorTotalLanche);
             this.calcularPromocaoLight(listaOpcaoIngredientes, valorTotalLanche);
         return valorTotalLanche;
     }
     
+    /** Calcula o desconto a ser aplicado para a promoção mais queijo e mais carne, Pague 2 Leva 3 */
     calcularDesconto(obj:OpcaoIngrediente){
-      
-      if(obj == undefined){
-         <OpcaoIngrediente> obj;
-         console.log('AAAAAAAAAAAAAAAAAAAAAAA');
-      }
         if(obj.quantidade > 2 && obj.quantidade % 3 == 0){
             //calcula quantos itens é para pagar 
             var qntItemPagar = (obj.quantidade/3)  * 2;
@@ -72,7 +72,6 @@ export class PromocaoCardapioHelper {
             var valorSemDesconto = obj.quantidade * obj.ingrediente.valor ;
             var valorComDesconto = qntItemPagar * obj.ingrediente.valor;
             var desconto = valorSemDesconto  - valorComDesconto;
-            console.log("Com Desconto:"+valorComDesconto+" Sem Desconto: "+valorSemDesconto+ " Desconto: "+desconto)
             obj.valorDesconto = desconto;
             obj.valorTotal = qntItemPagar * obj.ingrediente.valor;
         }else{
