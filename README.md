@@ -1,27 +1,30 @@
 # Lancheclient
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.3.
+Sistema desenvolvido com Angular e Bootstrap 
 
-## Development server
+Endereço do Projeto do Servidor: https://github.com/heriveltonpaiva/LancheBem 
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Instruções para Execução do Projeto
 
-## Code scaffolding
+Tenha o Node Instalado: (Versões utilizadas: NPM v 5.6.0 e  Node 9.10.1)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Baixar o Projeto e Instalar Dependências
 
-## Build
+1 – Instalar as dependências do Projeto  
+[SeuDiretorio]\lancheclient-master> npm install
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
+2 – Instalar a dependência do bootstrap   
+[SeuDiretorio]\lancheclient-master> npm install bootstrap@next
 
-## Running unit tests
+## Rodar o Projeto
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+3 - [SeuDiretorio]\lancheclient-master> ng server -open 
 
-## Running end-to-end tests
+Ambiente Local: http://localhost:4200/dashboard (Necessário o servidor rodando para alimentação do sistema)
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+## Rodar os Testes Automatizados
 
-## Further help
+4 - [SeuDiretorio]\lancheclient-master>  ng test
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+http://localhost:9876  (Navegador Chrome)
+  
