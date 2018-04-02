@@ -28,14 +28,12 @@ export class IngredienteService {
   getListaIngredientes(): Observable<Ingrediente[]> {
     return this.http.get(this.ingredienteURL)
     .map((response: Response) => <Ingrediente>response.json())
-            .do(data => console.log('All: ' + JSON.stringify(data)))
             .catch(this.handleError);
   }
   getIngrediente(id:number){
      const url = `${this.ingredienteURL}/${id}`;
      return this.http.get(this.ingredienteURL)
     .map((response: Response) => <Ingrediente>response.json())
-            .do(data => console.log('Unitário: ' + JSON.stringify(data)))
             .catch(this.handleError);
   }
 
@@ -47,8 +45,7 @@ export class IngredienteService {
       tap(_ => this.log(httpOptions.headers+"")),
       catchError(this.handleErrorOperation<any>('Erro na atualização do ingrediente'))
     );
-  }
-  
+  }  
   private handleError(error: Response) {
         console.error(error);
         return Observable.throw(error.json().error || 'Server error');

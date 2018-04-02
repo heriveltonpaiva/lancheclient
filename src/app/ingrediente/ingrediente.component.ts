@@ -9,6 +9,7 @@ import { IngredienteService } from './ingrediente.service';
 })
 
 export class IngredienteComponent implements OnInit {
+  
   ingredientes : Ingrediente[];
   objSelecionado: Ingrediente;
   
@@ -21,7 +22,6 @@ export class IngredienteComponent implements OnInit {
   preAlterar(obj: Ingrediente){
     this.objSelecionado = obj;
   }
-  
   getIngredientes(): void {
     this.ingredienteService.getListaIngredientes()
         .subscribe(ingredientes => this.ingredientes = ingredientes);
